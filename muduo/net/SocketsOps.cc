@@ -236,7 +236,7 @@ void sockets::fromIpPort(const char* ip, uint16_t port,
 {
   addr->sin6_family = AF_INET6;
   addr->sin6_port = hostToNetwork16(port);
-  if (::inet_pton(AF_INET, ip, &addr->sin6_addr) <= 0)
+  if (::inet_pton(AF_INET6, ip, &addr->sin6_addr) <= 0)
   {
     LOG_SYSERR << "sockets::fromIpPort";
   }
@@ -281,6 +281,9 @@ struct sockaddr_in6 sockets::getPeerAddr(int sockfd)
   return peeraddr;
 }
 
+#if !(__GNUC_PREREQ (4,6))
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+#endif
 bool sockets::isSelfConnect(int sockfd)
 {
   struct sockaddr_in6 localaddr = getLocalAddr(sockfd);

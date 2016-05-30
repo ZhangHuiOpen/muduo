@@ -43,7 +43,7 @@ class TcpClient : noncopyable
   }
 
   EventLoop* getLoop() const { return loop_; }
-  bool retry() const;
+  bool retry() const { return retry_; }
   void enableRetry() { retry_ = true; }
 
   const string& name() const
